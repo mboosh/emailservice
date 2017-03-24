@@ -1,3 +1,10 @@
+# eclipse
+bin
+.classpath
+.project
+.settings
+target
+
 .gradle
 build/
 
