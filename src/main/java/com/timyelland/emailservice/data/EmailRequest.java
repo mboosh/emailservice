@@ -1,22 +1,22 @@
 package com.timyelland.emailservice.data;
 
 public class EmailRequest {
-	private String toemail;
-	private String ccemail;
+	private String toEmail;
+	private String ccEmail;
 	private String subject;
 	private String content;
 	
 	public String getToEmail() {
-		return toemail;
+		return toEmail;
 	}
 	public void setToEmail(String toemail) {
-		this.toemail = toemail;
+		this.toEmail = toemail;
 	}
 	public String getCcEmail() {
-		return ccemail;
+		return ccEmail;
 	}
 	public void setCcEmail(String ccemail) {
-		this.ccemail = ccemail;
+		this.ccEmail = ccemail;
 	}
 	public String getSubject() {
 		return subject;

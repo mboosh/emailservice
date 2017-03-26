@@ -8,7 +8,7 @@
 </head>
 <body ng-controller="EmailServiceController">
   <div class="container">
-    <form name="emailForm" ng-submit="submitForm()">
+    <form novalidate ng-submit="submitForm()">
       <div role="alert">
         <span class="error" ng-show="emailForm.toemail.$error.required">
           To Email Address is a Mandatory Field!</span>

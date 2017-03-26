@@ -6,12 +6,18 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.timyelland.emailservice.data.EmailProviderSmtpProperties;
+import com.timyelland.emailservice.constants.ResponseMessages;
 import com.timyelland.emailservice.data.EmailRequest;
 import com.timyelland.emailservice.data.EmailResponse;
+import com.timyelland.emailservice.data.SmtpProperties;
+import com.timyelland.emailservice.servlet.EmailServiceServlet;
 
 public class EmailManager {
+	final static Logger logger = Logger.getLogger(EmailManager.class);
+	
 	private static EmailManager emailManager;
 	
 	private static final String AMAZON_SES_PROPERTIES = "amazonses.smtp.properties";
@@ -22,7 +28,9 @@ public class EmailManager {
 	}
 	
 	public static EmailManager get() {
+		logger.debug("Method: get");
 		if (Objects.isNull(emailManager)) {
+			logger.debug("Creating new EmailManager instance!");
 			emailManager = new EmailManager();
 			emailManager.init();
 		}
@@ -30,48 +38,51 @@ public class EmailManager {
 	}
 
 	private void init() {
+		logger.debug("Method: init");
 		final EmailHandler amazonHandler = new EmailHandlerImpl(readProperties(AMAZON_SES_PROPERTIES));
 		final EmailHandler somOtherHandler = new EmailHandlerImpl(readProperties(AMAZON_SES_PROPERTIES));
 		amazonHandler.nextHandler(somOtherHandler);
 		this.emailHandler = amazonHandler;
 	}
 	
-	private EmailProviderSmtpProperties readProperties(final String fileName) {
+	private SmtpProperties readProperties(final String fileName) {
+		logger.debug("Method: readProperties: " + fileName);
 		final Properties props = new Properties();
 		final InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
 		if (inputStream != null) {
 			try {
 				props.load(inputStream);
-			} catch (IOException e) {
+			} catch (IOException ex) {
+				logger.error("Exception reading property file", ex);
 				return null;
 			}
 		}		
-		return new EmailProviderSmtpProperties().set(props);
+		return new SmtpProperties().set(props);
 	}
 
 	public EmailResponse process(BufferedReader reader) {
+		logger.debug("Method: process");
 		final EmailRequest emailRequest = mapEmailRequest(reader);
 		if (Objects.isNull(emailRequest)) {
+			logger.debug("Null EmailRequest returned");
 			return setupErrorEmailResponse();
 		}		
 		return emailHandler.handleRequest(emailRequest);
 	}
 	
 	private EmailResponse setupErrorEmailResponse() {
-		return null;
+		logger.debug("Method: setupErrorEmailResponse");
+		return new EmailResponse(ResponseMessages.UNABLE_TO_MAP_REQUEST_OBJECT);
 	}
 
-	private EmailRequest mapEmailRequest(final BufferedReader reader) {		
+	private EmailRequest mapEmailRequest(final BufferedReader reader) {
+		logger.debug("Method: mapEmailRequest");
 		try {
 			final ObjectMapper mapper = new ObjectMapper();
 			return mapper.readValue(reader, EmailRequest.class);
-		} catch (IOException e) {
+		} catch (IOException ex) {
+			logger.error("Exception mapping email request", ex);
 			return null;
 		}
-	}
-	
-	
-	
-	
-	
+	}	
 }

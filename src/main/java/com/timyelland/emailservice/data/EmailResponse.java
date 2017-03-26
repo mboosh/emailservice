@@ -1,17 +1,19 @@
 package com.timyelland.emailservice.data;
 
-public class EmailResponse {
-	private String message;
+import com.timyelland.emailservice.constants.ResponseMessages;
 
-	public EmailResponse(String message) {
+public class EmailResponse {
+	private ResponseMessages message;
+
+	public EmailResponse(ResponseMessages unableToMapRequestObject) {
 		this.message = message;
 	}
 
-	public String getMessage() {
+	public ResponseMessages getMessage() {
 		return message;
 	}
 
-	public void setMessage(String message) {
+	public void setMessage(ResponseMessages message) {
 		this.message = message;
 	}
 
