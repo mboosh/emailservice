@@ -10,6 +10,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage.RecipientType;
 
 import org.apache.log4j.Logger;
 
@@ -52,7 +53,10 @@ public class SmtpHandler {
 		MimeMessage msg = new MimeMessage(session);
 		try {
 			msg.setFrom(new InternetAddress(smtpProps.getFromEmail()));
-			msg.setRecipient(Message.RecipientType.TO, new InternetAddress(request.getToEmail()));
+			msg.setRecipient(RecipientType.TO, new InternetAddress(request.getToEmail()));			
+			if (Objects.nonNull(request.getCcEmail()) && !request.getCcEmail().isEmpty()) {
+				msg.setRecipient(RecipientType.CC, new InternetAddress(request.getCcEmail()));
+			}
 			msg.setSubject(request.getSubject());
 			msg.setContent(request.getContent(), "text/plain");
 			return msg;
