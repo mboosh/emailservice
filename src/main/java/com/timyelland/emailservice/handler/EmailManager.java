@@ -17,10 +17,11 @@ import com.timyelland.emailservice.servlet.EmailServiceServlet;
 
 public class EmailManager {
 	final static Logger logger = Logger.getLogger(EmailManager.class);
+	private static final String AMAZON_SES_US_WEST_2_PROPERTIES = "email-smtp.us-west-2.amazonaws.com.properties";	
+	private static final String AMAZON_SES_EU_WEST_1_PROPERTIES = "email-smtp.eu-west-1.amazonaws.com.properties";
+	private static final String AMAZON_SES_US_EAST_1_PROPERTIES = "email-smtp.us-east-1.amazonaws.com.properties";
 	
 	private static EmailManager emailManager;
-	
-	private static final String AMAZON_SES_PROPERTIES = "amazonses.smtp.properties";
 	private EmailHandler emailHandler;
 	
 	
@@ -39,10 +40,14 @@ public class EmailManager {
 
 	private void init() {
 		logger.debug("Method: init");
-		final EmailHandler amazonHandler = new EmailHandlerImpl(readProperties(AMAZON_SES_PROPERTIES));
-		final EmailHandler somOtherHandler = new EmailHandlerImpl(readProperties(AMAZON_SES_PROPERTIES));
-		amazonHandler.nextHandler(somOtherHandler);
-		this.emailHandler = amazonHandler;
+		final EmailHandler amazonUsWest2Handler = new EmailHandlerImpl(readProperties(AMAZON_SES_US_WEST_2_PROPERTIES));
+		final EmailHandler amazonEuWest1Handler = new EmailHandlerImpl(readProperties(AMAZON_SES_EU_WEST_1_PROPERTIES));
+		final EmailHandler amazonUsEast1 = new EmailHandlerImpl(readProperties(AMAZON_SES_US_EAST_1_PROPERTIES));
+		
+		amazonUsWest2Handler.nextHandler(amazonEuWest1Handler);
+		amazonEuWest1Handler.nextHandler(amazonUsEast1);
+		
+		this.emailHandler = amazonUsWest2Handler;
 	}
 	
 	private SmtpProperties readProperties(final String fileName) {
