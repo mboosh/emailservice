@@ -11,35 +11,44 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import com.timyelland.emailservice.data.EmailProviderSmtpProperties;
+import org.apache.log4j.Logger;
+
 import com.timyelland.emailservice.data.EmailRequest;
+import com.timyelland.emailservice.data.SmtpProperties;
 
 public class SmtpHandler {
-	public static boolean sendEmail(EmailRequest request, EmailProviderSmtpProperties smtpProps) {
+	final static Logger logger = Logger.getLogger(EmailManager.class);
+	
+	public static boolean sendEmail(EmailRequest request, SmtpProperties smtpProps) {
+		logger.debug("Method: sendEmail: " + request.getToEmail());
 		final Properties props = createProperties(smtpProps);
 		final Session session = Session.getDefaultInstance(props);
 		MimeMessage msg = createMimeMessage(request, session, smtpProps);
 		if (Objects.isNull(msg)) {
+			logger.error("Unable to create MimeMessage");
 			return false;
 		}
 		
 		try {
 			sendEmail(smtpProps, session, msg);			
-		} catch (final Exception exception) {
+		} catch (final Exception ex) {
+			logger.error("Unable to sendEmail", ex);
 			return false;
 		}
 		return true;
 	}
 
-	private static void sendEmail(EmailProviderSmtpProperties smtpProps, final Session session, MimeMessage msg)
+	private static void sendEmail(SmtpProperties smtpProps, final Session session, MimeMessage msg)
 			throws Exception {
+		logger.debug("Method: sendEmail(smtpProps, session, msg");
 		final Transport transport = session.getTransport();
 		transport.connect(smtpProps.getHost(), smtpProps.getUserName(), smtpProps.getPassword());
 		transport.sendMessage(msg, msg.getAllRecipients());		
 		transport.close();
 	}
 
-	private static MimeMessage createMimeMessage(EmailRequest request, final Session session, EmailProviderSmtpProperties smtpProps) {
+	private static MimeMessage createMimeMessage(EmailRequest request, final Session session, SmtpProperties smtpProps) {
+		logger.debug("Method: createMimeMessage");
 		MimeMessage msg = new MimeMessage(session);
 		try {
 			msg.setFrom(new InternetAddress(smtpProps.getFromEmail()));
@@ -47,12 +56,14 @@ public class SmtpHandler {
 			msg.setSubject(request.getSubject());
 			msg.setContent(request.getContent(), "text/plain");
 			return msg;
-		} catch (final Exception e) {
+		} catch (final Exception ex) {
+			logger.error("Exception creatingMimeMessage", ex);
 			return null;
 		}
 	}
 
-	private static Properties createProperties(EmailProviderSmtpProperties smtpProps) {
+	private static Properties createProperties(SmtpProperties smtpProps) {
+		logger.debug("Method: createProperties");
 		final Properties props = System.getProperties();
 		props.put("mail.transport.protocol", "smtps");
 		props.put("mail.smtp.port", smtpProps.getPort());

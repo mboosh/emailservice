@@ -30,13 +30,15 @@ public class EmailServiceServlet extends HttpServlet {
 	}
 	
 	protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {		
-		logger.debug("Entered EmailServiceServlet doPost");
+		logger.debug("Method: doPost");
 		final EmailManager emailManager = EmailManager.get();
 		setupResponse(emailManager.process(request.getReader()), response);		
 	}
 
 	private void setupResponse(final EmailResponse emailResponse, final HttpServletResponse response) {
+		logger.debug("Method: setupResponse()");
 		String json = new Gson().toJson(emailResponse);
+		logger.debug("Json Value: " + json);
 	    response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 	    try {
@@ -45,6 +47,7 @@ public class EmailServiceServlet extends HttpServlet {
 			logger.error("Error creating response JSON", ex);
 		}			
 	}
+
 
 
 }
