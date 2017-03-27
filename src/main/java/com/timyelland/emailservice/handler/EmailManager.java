@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.timyelland.emailservice.data.EmailProviderSmtpProperties;
+import com.timyelland.emailservice.data.SmtpProperties;
 import com.timyelland.emailservice.data.EmailRequest;
 import com.timyelland.emailservice.data.EmailResponse;
 
@@ -36,7 +36,7 @@ public class EmailManager {
 		this.emailHandler = amazonHandler;
 	}
 	
-	private EmailProviderSmtpProperties readProperties(final String fileName) {
+	private SmtpProperties readProperties(final String fileName) {
 		final Properties props = new Properties();
 		final InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
 		if (inputStream != null) {
@@ -46,7 +46,7 @@ public class EmailManager {
 				return null;
 			}
 		}		
-		return new EmailProviderSmtpProperties().set(props);
+		return new SmtpProperties().set(props);
 	}
 
 	public EmailResponse process(BufferedReader reader) {

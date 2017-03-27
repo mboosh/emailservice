@@ -2,7 +2,7 @@ package com.timyelland.emailservice.data;
 
 import java.util.Properties;
 
-public class EmailProviderSmtpProperties {
+public class SmtpProperties {
 	private String port;
 	private String host;
 	private String userName;
@@ -29,7 +29,7 @@ public class EmailProviderSmtpProperties {
 		return fromEmail;
 	}	
 
-	public EmailProviderSmtpProperties set(Properties props) {
+	public SmtpProperties set(Properties props) {
 		port = props.getProperty("port");
 		host = props.getProperty("host");
 		userName = props.getProperty("userName");

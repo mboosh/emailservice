@@ -2,15 +2,15 @@ package com.timyelland.emailservice.handler;
 
 import java.util.Objects;
 
-import com.timyelland.emailservice.data.EmailProviderSmtpProperties;
+import com.timyelland.emailservice.data.SmtpProperties;
 import com.timyelland.emailservice.data.EmailRequest;
 import com.timyelland.emailservice.data.EmailResponse;
 
 public class EmailHandlerImpl implements EmailHandler {
 	private EmailHandler nextHandler;
-	private EmailProviderSmtpProperties properties;
+	private SmtpProperties properties;
 
-	public EmailHandlerImpl(EmailProviderSmtpProperties properties) {
+	public EmailHandlerImpl(SmtpProperties properties) {
 		this.properties = properties;
 	}	
 

@@ -4,18 +4,16 @@ import java.util.Objects;
 import java.util.Properties;
 
 import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import com.timyelland.emailservice.data.EmailProviderSmtpProperties;
+import com.timyelland.emailservice.data.SmtpProperties;
 import com.timyelland.emailservice.data.EmailRequest;
 
 public class SmtpHandler {
-	public static boolean sendEmail(EmailRequest request, EmailProviderSmtpProperties smtpProps) {
+	public static boolean sendEmail(EmailRequest request, SmtpProperties smtpProps) {
 		final Properties props = createProperties(smtpProps);
 		final Session session = Session.getDefaultInstance(props);
 		MimeMessage msg = createMimeMessage(request, session, smtpProps);
@@ -31,7 +29,7 @@ public class SmtpHandler {
 		return true;
 	}
 
-	private static void sendEmail(EmailProviderSmtpProperties smtpProps, final Session session, MimeMessage msg)
+	private static void sendEmail(SmtpProperties smtpProps, final Session session, MimeMessage msg)
 			throws Exception {
 		final Transport transport = session.getTransport();
 		transport.connect(smtpProps.getHost(), smtpProps.getUserName(), smtpProps.getPassword());
@@ -39,7 +37,7 @@ public class SmtpHandler {
 		transport.close();
 	}
 
-	private static MimeMessage createMimeMessage(EmailRequest request, final Session session, EmailProviderSmtpProperties smtpProps) {
+	private static MimeMessage createMimeMessage(EmailRequest request, final Session session, SmtpProperties smtpProps) {
 		MimeMessage msg = new MimeMessage(session);
 		try {
 			msg.setFrom(new InternetAddress(smtpProps.getFromEmail()));
@@ -52,7 +50,7 @@ public class SmtpHandler {
 		}
 	}
 
-	private static Properties createProperties(EmailProviderSmtpProperties smtpProps) {
+	private static Properties createProperties(SmtpProperties smtpProps) {
 		final Properties props = System.getProperties();
 		props.put("mail.transport.protocol", "smtps");
 		props.put("mail.smtp.port", smtpProps.getPort());
