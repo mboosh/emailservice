@@ -31,6 +31,9 @@ public class EmailManager {
 		this.smtpHandler = smtpHandler;
 	}
 	
+	/*
+	 * Create singleton instace of EmailManager
+	 */
 	public static EmailManager get(final SmtpHandler smtpHandler) {
 		logger.debug("Method: get");
 		if (Objects.isNull(emailManager)) {
@@ -41,6 +44,10 @@ public class EmailManager {
 		return emailManager;
 	}
 
+	/*
+	 * load the smtp property files and set the email handler chain
+	 * this chain dictates the sequence in which smtp servers will called
+	 */
 	private void init() {
 		logger.debug("Method: init");
 		final EmailHandler amazonUsWest2Handler = new EmailHandlerImpl(readProperties(AMAZON_SES_US_WEST_2_PROPERTIES));
@@ -53,6 +60,9 @@ public class EmailManager {
 		this.emailHandler = amazonUsWest2Handler;
 	}
 	
+	/*
+	 * read in the smtp property files for the email servers
+	 */
 	private SmtpProperties readProperties(final String fileName) {
 		logger.debug("Method: readProperties: " + fileName);
 		final Properties props = new Properties();
@@ -67,7 +77,8 @@ public class EmailManager {
 		}		
 		return new SmtpProperties().set(props);
 	}
-
+	
+	
 	public EmailResponse process(BufferedReader reader) {
 		logger.debug("Method: process");
 		final EmailRequest emailRequest = mapEmailRequest(reader);
