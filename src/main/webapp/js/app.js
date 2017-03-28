@@ -1,8 +1,7 @@
 /**
  * 
  */
-
-var emailServiceApp = angular.module('EmailServiceApp', []);
+var emailServiceApp = angular.module('EmailServiceApp', ["ngMessages"]);
 
 var emailServiceController = emailServiceApp.controller('EmailServiceController', ['$scope', '$http', function($scope, $http) {  
   $scope.submitForm = function() {

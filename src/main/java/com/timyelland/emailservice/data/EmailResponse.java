@@ -12,9 +12,4 @@ public class EmailResponse {
 	public ResponseMessages getMessage() {
 		return message;
 	}
-
-	public void setMessage(ResponseMessages message) {
-		this.message = message;
-	}
-
 }

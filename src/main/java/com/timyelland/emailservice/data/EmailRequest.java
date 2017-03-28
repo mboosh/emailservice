@@ -1,5 +1,7 @@
 package com.timyelland.emailservice.data;
 
+import java.util.Objects;
+
 public class EmailRequest {
 	private String toEmail;
 	private String ccEmail;
@@ -25,7 +27,7 @@ public class EmailRequest {
 		this.subject = subject;
 	}
 	public String getContent() {
-		return content;
+		return Objects.nonNull(content) ? content : "";
 	}
 	public void setContent(String content) {
 		this.content = content;
