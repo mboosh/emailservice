@@ -22,17 +22,19 @@ public class EmailManager {
 	private static final String AMAZON_SES_US_EAST_1_PROPERTIES = "email-smtp.us-east-1.amazonaws.com.properties";
 	
 	private static EmailManager emailManager;
-	private EmailHandler emailHandler;
+	private EmailHandler emailHandler;	
+	private SmtpHandler smtpHandler;
 	
 	
-	private EmailManager() {
+	private EmailManager(final SmtpHandler smtpHandler) {
+		this.smtpHandler = smtpHandler;
 	}
 	
-	public static EmailManager get() {
+	public static EmailManager get(final SmtpHandler smtpHandler) {
 		logger.debug("Method: get");
 		if (Objects.isNull(emailManager)) {
 			logger.debug("Creating new EmailManager instance!");
-			emailManager = new EmailManager();
+			emailManager = new EmailManager(smtpHandler);
 			emailManager.init();
 		}
 		return emailManager;
@@ -44,8 +46,8 @@ public class EmailManager {
 		final EmailHandler amazonEuWest1Handler = new EmailHandlerImpl(readProperties(AMAZON_SES_EU_WEST_1_PROPERTIES));
 		final EmailHandler amazonUsEast1 = new EmailHandlerImpl(readProperties(AMAZON_SES_US_EAST_1_PROPERTIES));
 		
-		amazonUsWest2Handler.nextHandler(amazonEuWest1Handler);
-		amazonEuWest1Handler.nextHandler(amazonUsEast1);
+		amazonUsWest2Handler.nextHandler(amazonEuWest1Handler, smtpHandler);
+		amazonEuWest1Handler.nextHandler(amazonUsEast1, smtpHandler);
 		
 		this.emailHandler = amazonUsWest2Handler;
 	}
