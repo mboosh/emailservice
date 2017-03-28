@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 import com.timyelland.emailservice.data.EmailRequest;
 import com.timyelland.emailservice.data.EmailResponse;
 import com.timyelland.emailservice.handler.EmailManager;
-import com.timyelland.emailservice.handler.LiveSmtpHandler;
+import com.timyelland.emailservice.handler.impl.LiveSmtpHandler;
 
 @WebServlet("/service")
 public class EmailServiceServlet extends HttpServlet {

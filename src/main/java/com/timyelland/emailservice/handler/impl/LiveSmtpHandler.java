@@ -1,4 +1,4 @@
-package com.timyelland.emailservice.handler;
+package com.timyelland.emailservice.handler.impl;
 
 import java.util.Objects;
 import java.util.Properties;
@@ -16,9 +16,11 @@ import org.apache.log4j.Logger;
 
 import com.timyelland.emailservice.data.EmailRequest;
 import com.timyelland.emailservice.data.SmtpProperties;
+import com.timyelland.emailservice.handler.EmailManager;
+import com.timyelland.emailservice.handler.SmtpHandler;
 
 public class LiveSmtpHandler implements SmtpHandler {
-	final static Logger logger = Logger.getLogger(EmailManager.class);
+	final static Logger logger = Logger.getLogger(LiveSmtpHandler.class);
 	
 	public boolean sendEmail(EmailRequest request, SmtpProperties smtpProps) {
 		logger.debug("Method: sendEmail: " + request.getToEmail());

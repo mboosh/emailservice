@@ -1,4 +1,4 @@
-package com.timyelland.emailservice.handler;
+package com.timyelland.emailservice.handler.impl;
 
 import java.util.Objects;
 
@@ -8,6 +8,8 @@ import com.timyelland.emailservice.constants.ResponseMessages;
 import com.timyelland.emailservice.data.EmailRequest;
 import com.timyelland.emailservice.data.EmailResponse;
 import com.timyelland.emailservice.data.SmtpProperties;
+import com.timyelland.emailservice.handler.EmailHandler;
+import com.timyelland.emailservice.handler.SmtpHandler;
 
 public class EmailHandlerImpl implements EmailHandler {
 	final static Logger logger = Logger.getLogger(EmailHandlerImpl.class);

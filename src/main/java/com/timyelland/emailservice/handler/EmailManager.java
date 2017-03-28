@@ -13,6 +13,7 @@ import com.timyelland.emailservice.constants.ResponseMessages;
 import com.timyelland.emailservice.data.EmailRequest;
 import com.timyelland.emailservice.data.EmailResponse;
 import com.timyelland.emailservice.data.SmtpProperties;
+import com.timyelland.emailservice.handler.impl.EmailHandlerImpl;
 import com.timyelland.emailservice.servlet.EmailServiceServlet;
 
 public class EmailManager {
