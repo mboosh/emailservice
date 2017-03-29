@@ -37,8 +37,10 @@
         </div>
       </fieldset>             
       <button type="submit" data-submit="...Sending">Submit</button>
-      <div ng-class="{hideByDefault:!showErrorMessage}">{{message}}</div>
-      <div ng-class="{hideByDefault:!showSuccessfulMessage}">{{message}}</div>
+      <div class="loading-div">
+        <img src="img\spinner.gif"  ng-show="delay">
+      </div>
+      <div ng-class="{hideByDefault}">{{message}}</div>
       </form>            
     </div>
 
