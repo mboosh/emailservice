@@ -13,6 +13,7 @@ import com.timyelland.emailservice.constants.ResponseMessages;
 import com.timyelland.emailservice.data.EmailRequest;
 import com.timyelland.emailservice.data.EmailResponse;
 import com.timyelland.emailservice.data.SmtpProperties;
+import com.timyelland.emailservice.handler.impl.EmailHandlerImpl;
 import com.timyelland.emailservice.servlet.EmailServiceServlet;
 
 public class EmailManager {
@@ -22,34 +23,46 @@ public class EmailManager {
 	private static final String AMAZON_SES_US_EAST_1_PROPERTIES = "email-smtp.us-east-1.amazonaws.com.properties";
 	
 	private static EmailManager emailManager;
-	private EmailHandler emailHandler;
+	private EmailHandler emailHandler;	
+	private SmtpHandler smtpHandler;
 	
 	
-	private EmailManager() {
+	private EmailManager(final SmtpHandler smtpHandler) {
+		this.smtpHandler = smtpHandler;
 	}
 	
-	public static EmailManager get() {
+	/*
+	 * Create singleton instace of EmailManager
+	 */
+	public static EmailManager get(final SmtpHandler smtpHandler) {
 		logger.debug("Method: get");
 		if (Objects.isNull(emailManager)) {
 			logger.debug("Creating new EmailManager instance!");
-			emailManager = new EmailManager();
+			emailManager = new EmailManager(smtpHandler);
 			emailManager.init();
 		}
 		return emailManager;
 	}
 
+	/*
+	 * load the smtp property files and set the email handler chain
+	 * this chain dictates the sequence in which smtp servers will called
+	 */
 	private void init() {
 		logger.debug("Method: init");
 		final EmailHandler amazonUsWest2Handler = new EmailHandlerImpl(readProperties(AMAZON_SES_US_WEST_2_PROPERTIES));
 		final EmailHandler amazonEuWest1Handler = new EmailHandlerImpl(readProperties(AMAZON_SES_EU_WEST_1_PROPERTIES));
 		final EmailHandler amazonUsEast1 = new EmailHandlerImpl(readProperties(AMAZON_SES_US_EAST_1_PROPERTIES));
 		
-		amazonUsWest2Handler.nextHandler(amazonEuWest1Handler);
-		amazonEuWest1Handler.nextHandler(amazonUsEast1);
+		amazonUsWest2Handler.nextHandler(amazonEuWest1Handler, smtpHandler);
+		amazonEuWest1Handler.nextHandler(amazonUsEast1, smtpHandler);
 		
 		this.emailHandler = amazonUsWest2Handler;
 	}
 	
+	/*
+	 * read in the smtp property files for the email servers
+	 */
 	private SmtpProperties readProperties(final String fileName) {
 		logger.debug("Method: readProperties: " + fileName);
 		final Properties props = new Properties();
@@ -64,7 +77,8 @@ public class EmailManager {
 		}		
 		return new SmtpProperties().set(props);
 	}
-
+	
+	
 	public EmailResponse process(BufferedReader reader) {
 		logger.debug("Method: process");
 		final EmailRequest emailRequest = mapEmailRequest(reader);

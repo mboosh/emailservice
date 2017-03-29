@@ -3,8 +3,8 @@ package com.timyelland.emailservice.handler;
 import com.timyelland.emailservice.data.EmailRequest;
 import com.timyelland.emailservice.data.EmailResponse;
 
-public interface EmailHandler {
-	void nextHandler(EmailHandler handler);
+public interface EmailHandler {	  
+	void nextHandler(EmailHandler handler, SmtpHandler smtpHandler);
 	EmailResponse handleRequest(EmailRequest request);
 }
 

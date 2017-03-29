@@ -1,4 +1,4 @@
-package com.timyelland.emailservice.handler;
+package com.timyelland.emailservice.handler.impl;
 
 import java.util.Objects;
 
@@ -8,21 +8,26 @@ import com.timyelland.emailservice.constants.ResponseMessages;
 import com.timyelland.emailservice.data.EmailRequest;
 import com.timyelland.emailservice.data.EmailResponse;
 import com.timyelland.emailservice.data.SmtpProperties;
+import com.timyelland.emailservice.handler.EmailHandler;
+import com.timyelland.emailservice.handler.SmtpHandler;
 
 public class EmailHandlerImpl implements EmailHandler {
 	final static Logger logger = Logger.getLogger(EmailHandlerImpl.class);
 	
-	private EmailHandler nextHandler;
+	private EmailHandler nextEmailHandler;
 	private SmtpProperties properties;
+	private SmtpHandler smtpHandler;
+	
 
 	public EmailHandlerImpl(SmtpProperties properties) {
 		this.properties = properties;
 	}	
 
 	@Override
-	public void nextHandler(EmailHandler nextHandler) {
+	public void nextHandler(EmailHandler nextEmailHandler, final SmtpHandler smtpHandler) {
 		logger.debug("Method: nextHandler");
-		this.nextHandler = nextHandler;
+		this.nextEmailHandler = nextEmailHandler;
+		this.smtpHandler = smtpHandler;
 	}
 
 	@Override
@@ -30,7 +35,7 @@ public class EmailHandlerImpl implements EmailHandler {
 		logger.debug("Method: handleRequest");
 		final boolean successful = sendEmail(request);
 		logger.debug("Sending email was: " + successful);
-		return successful ? returnEmailSentSuccessfullyResponse() : Objects.isNull(nextHandler) ? returnUnableToSendEmailResponse()  : nextHandler.handleRequest(request);
+		return successful ? returnEmailSentSuccessfullyResponse() : Objects.isNull(nextEmailHandler) ? returnUnableToSendEmailResponse()  : nextEmailHandler.handleRequest(request);
 	}
 	
 	private EmailResponse returnEmailSentSuccessfullyResponse() {
@@ -45,6 +50,6 @@ public class EmailHandlerImpl implements EmailHandler {
 
 	private boolean sendEmail(final EmailRequest request) {
 		logger.debug("Method: sendEmail: " + request.getToEmail());
-		return SmtpHandler.sendEmail(request, properties);
+		return smtpHandler.sendEmail(request, properties);
 	}	
 }
