@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 import com.timyelland.emailservice.data.EmailRequest;
 import com.timyelland.emailservice.data.EmailResponse;
 import com.timyelland.emailservice.handler.EmailManager;
-import com.timyelland.emailservice.handler.impl.LiveSmtpHandler;
+import com.timyelland.emailservice.handler.impl.SmtpHandlerImpl;
 
 @WebServlet("/service")
 public class EmailServiceServlet extends HttpServlet {
@@ -32,7 +32,7 @@ public class EmailServiceServlet extends HttpServlet {
 	
 	protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {		
 		logger.debug("Method: doPost");		
-		final EmailManager emailManager = EmailManager.get(new LiveSmtpHandler());
+		final EmailManager emailManager = EmailManager.get(new SmtpHandlerImpl());
 		setupResponse(emailManager.process(request.getReader()), response);		
 	}
 

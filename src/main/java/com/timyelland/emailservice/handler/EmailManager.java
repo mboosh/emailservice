@@ -14,7 +14,6 @@ import com.timyelland.emailservice.data.EmailRequest;
 import com.timyelland.emailservice.data.EmailResponse;
 import com.timyelland.emailservice.data.SmtpProperties;
 import com.timyelland.emailservice.handler.impl.EmailHandlerImpl;
-import com.timyelland.emailservice.servlet.EmailServiceServlet;
 
 public class EmailManager {
 	final static Logger logger = Logger.getLogger(EmailManager.class);
@@ -50,12 +49,12 @@ public class EmailManager {
 	 */
 	private void init() {
 		logger.debug("Method: init");
-		final EmailHandler amazonUsWest2Handler = new EmailHandlerImpl(readProperties(AMAZON_SES_US_WEST_2_PROPERTIES));
-		final EmailHandler amazonEuWest1Handler = new EmailHandlerImpl(readProperties(AMAZON_SES_EU_WEST_1_PROPERTIES));
-		final EmailHandler amazonUsEast1 = new EmailHandlerImpl(readProperties(AMAZON_SES_US_EAST_1_PROPERTIES));
+		final EmailHandler amazonUsWest2Handler = new EmailHandlerImpl(readProperties(AMAZON_SES_US_WEST_2_PROPERTIES), smtpHandler);
+		final EmailHandler amazonEuWest1Handler = new EmailHandlerImpl(readProperties(AMAZON_SES_EU_WEST_1_PROPERTIES), smtpHandler);
+		final EmailHandler amazonUsEast1 = new EmailHandlerImpl(readProperties(AMAZON_SES_US_EAST_1_PROPERTIES), smtpHandler);
 		
-		amazonUsWest2Handler.nextHandler(amazonEuWest1Handler, smtpHandler);
-		amazonEuWest1Handler.nextHandler(amazonUsEast1, smtpHandler);
+		amazonUsWest2Handler.nextHandler(amazonEuWest1Handler);
+		amazonEuWest1Handler.nextHandler(amazonUsEast1);
 		
 		this.emailHandler = amazonUsWest2Handler;
 	}

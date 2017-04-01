@@ -3,11 +3,10 @@ package com.timyelland.emailservice.handler.impl;
 import java.util.Objects;
 import java.util.Properties;
 
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.event.TransportListener;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
@@ -16,11 +15,10 @@ import org.apache.log4j.Logger;
 
 import com.timyelland.emailservice.data.EmailRequest;
 import com.timyelland.emailservice.data.SmtpProperties;
-import com.timyelland.emailservice.handler.EmailManager;
 import com.timyelland.emailservice.handler.SmtpHandler;
 
-public class LiveSmtpHandler implements SmtpHandler {
-	final static Logger logger = Logger.getLogger(LiveSmtpHandler.class);
+public class SmtpHandlerImpl implements SmtpHandler {
+	final static Logger logger = Logger.getLogger(SmtpHandlerImpl.class);
 	
 	public boolean sendEmail(EmailRequest request, SmtpProperties smtpProps) {
 		logger.debug("Method: sendEmail: " + request.getToEmail());
@@ -41,15 +39,17 @@ public class LiveSmtpHandler implements SmtpHandler {
 		return true;
 	}
 
-	public void sendEmail(SmtpProperties smtpProps, final Session session, MimeMessage msg) throws MessagingException {
+	private TransportListener sendEmail(SmtpProperties smtpProps, final Session session, MimeMessage msg) throws MessagingException {
 		logger.debug("Method: sendEmail(smtpProps, session, msg");
 		final Transport transport = session.getTransport();
+		final TransportListener listener = new SmtpTransportListenerImpl(); 
 		transport.connect(smtpProps.getHost(), smtpProps.getUserName(), smtpProps.getPassword());
-		transport.sendMessage(msg, msg.getAllRecipients());		
+		transport.sendMessage(msg, msg.getAllRecipients());
+		transport.
 		transport.close();
 	}
 
-	public MimeMessage createMimeMessage(EmailRequest request, final Session session, SmtpProperties smtpProps) {
+	private MimeMessage createMimeMessage(EmailRequest request, final Session session, SmtpProperties smtpProps) {
 		logger.debug("Method: createMimeMessage");
 		MimeMessage msg = new MimeMessage(session);
 		try {
@@ -67,7 +67,7 @@ public class LiveSmtpHandler implements SmtpHandler {
 		}
 	}
 
-	public Properties createProperties(SmtpProperties smtpProps) {
+	private Properties createProperties(SmtpProperties smtpProps) {
 		logger.debug("Method: createProperties");
 		final Properties props = System.getProperties();
 		props.put("mail.transport.protocol", "smtps");

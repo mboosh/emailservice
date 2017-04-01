@@ -19,15 +19,15 @@ public class EmailHandlerImpl implements EmailHandler {
 	private SmtpHandler smtpHandler;
 	
 
-	public EmailHandlerImpl(SmtpProperties properties) {
+	public EmailHandlerImpl(final SmtpProperties properties, final SmtpHandler smtpHandler) {
 		this.properties = properties;
+		this.smtpHandler = smtpHandler;
 	}	
 
 	@Override
-	public void nextHandler(EmailHandler nextEmailHandler, final SmtpHandler smtpHandler) {
+	public void nextHandler(final EmailHandler nextEmailHandler) {
 		logger.debug("Method: nextHandler");
 		this.nextEmailHandler = nextEmailHandler;
-		this.smtpHandler = smtpHandler;
 	}
 
 	@Override
