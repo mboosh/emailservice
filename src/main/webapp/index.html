@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="EmailServiceApp">
+<head>
+<meta charset="ISO-8859-1">
+<title>Email Service</title>
+<link href="css/normalize.css" type="text/css">
+<link href="css/stylesheet.css" rel="stylesheet" type="text/css">
+</head>
+<body ng-controller="EmailServiceController">
+  <div class="container">
+    <form novalidate name="emailForm" id="emailForm" ng-submit="emailForm.$valid && submitForm()">
+     <div class="form-group">
+      <h3>Email Service</h3>
+      <fieldset>
+        <input type="email" name="toemail" ng-model="toemail" placeholder="To Email Address" tabindex="1" required autofocus>
+        <div ng-messages="emailForm.toemail.$error" ng-if="emailForm.toemail.$touched">
+          <div class="error" ng-message="required">To Email is a mandatory field.</div>
+          <div class="error" ng-message="email">Invalid Email Address.</div>
+        </div>        
+      </fieldset>
+      <fieldset>
+        <input type="email" name="ccemail" ng-model="ccemail" placeholder="CC Email Address" tabindex="2">
+        <div ng-messages="emailForm.ccemail.$error" ng-if="emailForm.ccemail.$touched">
+          <div class="error" ng-message="email">Invalid Email Address.</div>
+        </div>        
+      </fieldset>
+      <fieldset>
+        <input type="text" name="subject" ng-model="subject" placeholder="Subject" type="text" tabindex="3" required>
+        <div ng-messages="emailForm.subject.$error" ng-if="emailForm.subject.$touched">
+          <div class="error" ng-message="required">Subject is mandatory.</div>
+        </div>     
+      </fieldset>       
+      <fieldset>
+        <textarea name="content" ng-model="content" placeholder="Type your message here...." tabindex="4" required></textarea>
+        <div ng-messages="emailForm.content.$error" ng-if="emailForm.content.$touched">
+          <div class="error" ng-message="required">Message is Mandatory.</div>
+        </div>
+      </fieldset>             
+      <button type="submit" data-submit="...Sending">Submit</button>
+      <div class="loading-div">
+        <img src="img\spinner.gif"  ng-show="delay">
+      </div>
+      <div class="message" ng-class="{hideByDefault}">
+      	<div ng-repeat="(key, values) in messages">
+      		{{key}}
+      		<div ng-show="values != null">
+      			<div ng-repeat="value in values">
+      				<div ng-show="value != null">
+      					{{value}}	
+      				</div>
+      			</div>      			
+      		</div>      		
+      	</div>      	
+      </div>
+      </form>            
+    </div>
+</body>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-messages.min.js"></script>	
+<script src="js/app.js"></script>
+</html>
