@@ -1,10 +1,6 @@
 package com.timyelland.emailservice.servlet;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,9 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.timyelland.emailservice.data.EmailRequest;
 import com.timyelland.emailservice.data.EmailResponse;
 import com.timyelland.emailservice.handler.EmailManager;
 import com.timyelland.emailservice.handler.impl.SmtpHandlerImpl;

@@ -1,6 +1,5 @@
 package com.timyelland.emailservice.handler.impl;
 
-import javax.mail.Message;
 import javax.mail.event.TransportEvent;
 import javax.mail.event.TransportListener;
 
