@@ -19,37 +19,6 @@
         </div>        
       </fieldset>
       <fieldset>
-<<<<<<< HEAD
-        <input type="email" name="ccemail" ng-model="ccemail" placeholder="CC Email Address" tabindex="2" required>
-        <div ng-messages="emailForm.ccemail.$error" ng-if="emailForm.ccemail.$touched">
-          <div class="error" ng-message="email">Invalid Email Address.</div>
-        </div>        
-      </fieldset>
-      <fieldset>
-        <input type="text" name="subject" ng-model="subject" placeholder="Subject" type="text" tabindex="3" required>
-        <div ng-messages="emailForm.subject.$error" ng-if="emailForm.subject.$touched">
-          <div class="error" ng-message="required">Subject is mandatory.</div>
-        </div>     
-      </fieldset>       
-      <fieldset>
-        <textarea name="content" ng-model="content" placeholder="Type your message here...." tabindex="4" required></textarea>
-        <div ng-messages="emailForm.content.$error" ng-if="emailForm.content.$touched">
-          <div class="error" ng-message="required">Message is Mandatory.</div>
-        </div>
-      </fieldset>             
-      <button type="submit" data-submit="...Sending">Submit</button>
-      <div class="loading-div">
-        <img src="img\spinner.gif"  ng-show="delay">
-      </div>
-      <div ng-class="{hideByDefault}">{{message}}</div>
-      </form>            
-    </div>
-
-<p>{{5+5}}</p>
-<p>{{message}}</p>
-
-  
-=======
         <input type="email" name="ccemail" ng-model="ccemail" placeholder="CC Email Address" tabindex="2">
         <div ng-messages="emailForm.ccemail.$error" ng-if="emailForm.ccemail.$touched">
           <div class="error" ng-message="email">Invalid Email Address.</div>
@@ -85,7 +54,6 @@
       </div>
       </form>            
     </div>
->>>>>>> branch 'master' of https://github.com/mboosh/emailservice
 </body>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
