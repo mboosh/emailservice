@@ -1,32 +1,29 @@
-<<<<<<< HEAD
-# emailservice
-Email Service
-=======
 ### Email Service
 
 Email service which will enable you to send emails through various SMTP servers.
 
-## Source Code
+## Build
 
-  * Gradle
+  * Gradle to handle the build and the library dependencies.
 
 ## Front End
 
   * AngularJS
   * HTML
   * CSS
+
+NOTE: The JavaScript and CSS files will be hosted on jsdeliver once the pull request has being completed. 
   
 ## Back end
 
  * Java 
- * Servlet
- * Jackson
+ * Servlet 
  
-## Librarys
+## Library dependencies
 
-  * jackson
-  * java mail
-  * gson
+  * jackson to read in the JSON object from the HttpServletRequest
+  * java mail to handle the sending of the email to smtp servers
+  * gson to convert the EmailResponse to a JSON object.
   * log4j
  
 ## Chain of Responsibility
@@ -42,8 +39,3 @@ The code is currently only implementing the amazon ses servers but can be expand
   * fromEmail
 
 Update com.timyelland.emailservice.handler.EmailManager.init(). Add a new handler for the property file and add it to the chain.
-
-
-
-
->>>>>>> branch 'master' of https://github.com/mboosh/emailservice
