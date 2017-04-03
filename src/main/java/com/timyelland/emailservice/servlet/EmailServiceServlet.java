@@ -30,12 +30,19 @@ public class EmailServiceServlet extends HttpServlet {
 		doPost(request, response);
 	}
 	
+	/*
+	 * instantiates a singleton EmailManager to handle the request
+	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
 	protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {		
 		logger.debug("Method: doPost");		
 		final EmailManager emailManager = EmailManager.get(new SmtpHandlerImpl());
 		setupResponse(emailManager.process(request.getReader()), response);		
 	}
 
+	/*
+	 * Convert's the EmailResponse to a JSON message and writes it to the servlet response
+	 */
 	private void setupResponse(final EmailResponse emailResponse, final HttpServletResponse response) {
 		logger.debug("Method: setupResponse()");
 		String json = new Gson().toJson(emailResponse.getMessages());

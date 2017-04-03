@@ -19,6 +19,9 @@ import com.timyelland.emailservice.data.EmailResponse;
 import com.timyelland.emailservice.data.SmtpProperties;
 import com.timyelland.emailservice.handler.SmtpHandler;
 
+/*
+ * SmtpHandler handles the sending of the email.
+ */
 public class SmtpHandlerImpl implements SmtpHandler {
 	final static Logger logger = Logger.getLogger(SmtpHandlerImpl.class);
 	

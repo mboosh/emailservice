@@ -7,6 +7,9 @@ import javax.mail.event.TransportListener;
 import com.timyelland.emailservice.constants.ResponseMessages;
 import com.timyelland.emailservice.data.EmailResponse;
 
+/*
+ * TransportListener to listen to the response when sending emails.
+ */
 public class SmtpTransportListenerImpl implements TransportListener {
 	
 	private EmailResponse emailResponse;

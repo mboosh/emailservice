@@ -15,6 +15,12 @@ import com.timyelland.emailservice.data.EmailResponse;
 import com.timyelland.emailservice.data.SmtpProperties;
 import com.timyelland.emailservice.handler.impl.EmailHandlerImpl;
 
+/*
+ * EmailManager handles the conversion of the HttpServletRequest onto 
+ * EmailRequest which is in turn handles by the EmailHandlers
+ * in a chain of responsibility sequence until one of them
+ * is able to send the email.
+ */
 public class EmailManager {
 	final static Logger logger = Logger.getLogger(EmailManager.class);
 	private static final String AMAZON_SES_US_WEST_2_PROPERTIES = "email-smtp.us-west-2.amazonaws.com.properties";	
@@ -31,7 +37,7 @@ public class EmailManager {
 	}
 	
 	/*
-	 * Create singleton instace of EmailManager
+	 * Create singleton instance of EmailManager
 	 */
 	public static EmailManager get(final SmtpHandler smtpHandler) {
 		logger.debug("Method: get");
@@ -77,6 +83,10 @@ public class EmailManager {
 		return new SmtpProperties().set(props);
 	}
 
+	/*
+	 * Process an EmailRequest this hands it to the chain of smtp
+	 * servers to try send the email.
+	 */
 	public EmailResponse process(BufferedReader reader) {		
 		logger.debug("Method: process");
 		final EmailResponse response = EmailResponse.create();
@@ -89,12 +99,9 @@ public class EmailManager {
 		return response;
 	}
 	
-	private EmailResponse setupErrorEmailResponse(final EmailResponse response) {
-		logger.debug("Method: setupErrorEmailResponse");
-		response.setMessage(ResponseMessages.UNABLE_TO_MAP_REQUEST_OBJECT, null);
-		return response;
-	}
-
+	/*
+	 * Map the request object to EmailRequest.
+	 */
 	private EmailRequest mapEmailRequest(final BufferedReader reader, final EmailResponse response) {
 		logger.debug("Method: mapEmailRequest");
 		try {

@@ -11,6 +11,10 @@ import com.timyelland.emailservice.data.SmtpProperties;
 import com.timyelland.emailservice.handler.EmailHandler;
 import com.timyelland.emailservice.handler.SmtpHandler;
 
+/*
+ * EmailHandler which contains the next email handler to pass on the responsibility
+ * when this EmailHandler is unable to send the email. 
+ */
 public class EmailHandlerImpl implements EmailHandler {
 	final static Logger logger = Logger.getLogger(EmailHandlerImpl.class);
 	
@@ -31,7 +35,6 @@ public class EmailHandlerImpl implements EmailHandler {
 	}
 
 	@Override
-
 	public boolean handleRequest(final EmailRequest request, final EmailResponse response) {
 		logger.debug("Method: handleRequest");
 		final boolean successful = sendEmail(request, response);
