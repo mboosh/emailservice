@@ -1,33 +1,32 @@
 package com.timyelland.emailservice.data;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
 import com.timyelland.emailservice.constants.ResponseMessages;
 
 public class EmailResponse {
-	private ResponseMessages message;
-	private String messageDetail;
+	final Map<String,Set<String>> messages = new HashMap<>();
 
-	public EmailResponse(ResponseMessages message) {
-		this.message = message;
+	public Map<String,Set<String>> getMessages() {
+		return messages;
 	}
 	
-	public EmailResponse() {
-		this.message = ResponseMessages.EMAIL_SENT_SUCCESSFULLY;
+	public void setMessage(final ResponseMessages responseMessage, final String textMessage) {
+		Set<String> textMessages = messages.get(responseMessage.getMessage());
+		if (Objects.isNull(textMessages)) {
+			textMessages = new HashSet<String>();
+			messages.put(responseMessage.getMessage(), textMessages);			
+		}
+		textMessages.add(textMessage);
 	}
 
-	public ResponseMessages getMessage() {
-		return message;
+	public static EmailResponse create() {
+		return new EmailResponse();
 	}
-	
-	public void setMessage(final ResponseMessages responseMessage) {
-		this.message = responseMessage;
-	}
-
-	public String getMessageDetail() {
-		return messageDetail;
-	}
-
-	public void setMessageDetail(String messageDetail) {
-		this.messageDetail = messageDetail;
-	}	
-	
 }

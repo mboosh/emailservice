@@ -31,25 +31,35 @@ public class EmailHandlerImpl implements EmailHandler {
 	}
 
 	@Override
-	public EmailResponse handleRequest(EmailRequest request) {
+
+	public boolean handleRequest(final EmailRequest request, final EmailResponse response) {
 		logger.debug("Method: handleRequest");
-		final boolean successful = sendEmail(request);
+		final boolean successful = sendEmail(request, response);
 		logger.debug("Sending email was: " + successful);
-		return successful ? returnEmailSentSuccessfullyResponse() : Objects.isNull(nextEmailHandler) ? returnUnableToSendEmailResponse()  : nextEmailHandler.handleRequest(request);
+		if (successful) {
+			setEmailSentSuccessfullyResponse(response);
+		} else {
+			if (Objects.isNull(nextEmailHandler)) {
+				setUnableToSendEmailResponse(response);
+			} else {
+				return nextEmailHandler.handleRequest(request, response);
+			}
+		}
+		return successful;
 	}
 	
-	private EmailResponse returnEmailSentSuccessfullyResponse() {
-		logger.debug("Method: returnEmailSentSuccessfully");
-		return new EmailResponse(ResponseMessages.EMAIL_SENT_SUCCESSFULLY);
+	private void setEmailSentSuccessfullyResponse(final EmailResponse response) {
+		logger.debug("Method: setEmailSentSuccessfullyResponse");
+		response.setMessage(ResponseMessages.EMAIL_SENT_SUCCESSFULLY, null);		
 	}
 
-	private EmailResponse returnUnableToSendEmailResponse() {
-		logger.debug("Method: returnUnableToSendEmailResponse");
-		return new EmailResponse(ResponseMessages.UNABLE_TO_SEND_EMAIL);
+	private void setUnableToSendEmailResponse(final EmailResponse response) {
+		logger.debug("Method: setUnableToSendEmailResponse");
+		response.setMessage(ResponseMessages.UNABLE_TO_SEND_EMAIL, null);
 	}
 
-	private boolean sendEmail(final EmailRequest request) {
+	private boolean sendEmail(final EmailRequest request, final EmailResponse response) {
 		logger.debug("Method: sendEmail: " + request.getToEmail());
-		return smtpHandler.sendEmail(request, properties);
+		return smtpHandler.sendEmail(request, response, properties);
 	}	
 }

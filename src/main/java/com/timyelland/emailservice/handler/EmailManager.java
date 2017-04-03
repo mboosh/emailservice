@@ -76,30 +76,33 @@ public class EmailManager {
 		}		
 		return new SmtpProperties().set(props);
 	}
-	
-	
-	public EmailResponse process(BufferedReader reader) {
+
+	public EmailResponse process(BufferedReader reader) {		
 		logger.debug("Method: process");
-		final EmailRequest emailRequest = mapEmailRequest(reader);
-		if (Objects.isNull(emailRequest)) {
-			logger.debug("Null EmailRequest returned");
-			return setupErrorEmailResponse();
+		final EmailResponse response = EmailResponse.create();
+		final EmailRequest request = mapEmailRequest(reader, response);		
+		if (Objects.isNull(request)) {
+			logger.error("Null EmailRequest returned");
+			return response;
 		}		
-		return emailHandler.handleRequest(emailRequest);
+		emailHandler.handleRequest(request, response);
+		return response;
 	}
 	
-	private EmailResponse setupErrorEmailResponse() {
+	private EmailResponse setupErrorEmailResponse(final EmailResponse response) {
 		logger.debug("Method: setupErrorEmailResponse");
-		return new EmailResponse(ResponseMessages.UNABLE_TO_MAP_REQUEST_OBJECT);
+		response.setMessage(ResponseMessages.UNABLE_TO_MAP_REQUEST_OBJECT, null);
+		return response;
 	}
 
-	private EmailRequest mapEmailRequest(final BufferedReader reader) {
+	private EmailRequest mapEmailRequest(final BufferedReader reader, final EmailResponse response) {
 		logger.debug("Method: mapEmailRequest");
 		try {
 			final ObjectMapper mapper = new ObjectMapper();
 			return mapper.readValue(reader, EmailRequest.class);
 		} catch (IOException ex) {
 			logger.error("Exception mapping email request", ex);
+			response.setMessage(ResponseMessages.UNABLE_TO_MAP_REQUEST_OBJECT, ex.getMessage());
 			return null;
 		}
 	}	

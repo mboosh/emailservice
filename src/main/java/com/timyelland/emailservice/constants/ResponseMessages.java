@@ -1,13 +1,15 @@
 package com.timyelland.emailservice.constants;
 
 public enum ResponseMessages {
-	UNABLE_TO_MAP_REQUEST_OBJECT("Server Error: Unable To Map Request Object!"), 
-	EMAIL_SENT_SUCCESSFULLY("Email Sent Successfully!"), 
-	UNABLE_TO_SEND_EMAIL("We have being unable to send your email!"),;
+	EMAIL_PARTIALLY_DELIVERED("Email partially delivered!"),
+	EMAIL_SENT_SUCCESSFULLY("Email sent successfully!"),
+	MIME_MESSAGE_EXCEPTION("Exception creating message!"),
+	UNABLE_TO_MAP_REQUEST_OBJECT("Unable to map request object."),
+	UNABLE_TO_SEND_EMAIL("Unable To Send Email"),; 
 	
 	private String message;
 
-	ResponseMessages(final String message) {
+	private ResponseMessages(final String message) {
 		this.message = message;
 	}
 

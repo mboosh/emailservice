@@ -38,7 +38,7 @@ public class EmailServiceServlet extends HttpServlet {
 
 	private void setupResponse(final EmailResponse emailResponse, final HttpServletResponse response) {
 		logger.debug("Method: setupResponse()");
-		String json = new Gson().toJson(emailResponse.getMessage().getMessage());
+		String json = new Gson().toJson(emailResponse.getMessages());
 		logger.debug("Json Value: " + json);
 	    response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");

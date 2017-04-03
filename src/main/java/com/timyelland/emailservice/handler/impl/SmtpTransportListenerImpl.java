@@ -17,18 +17,16 @@ public class SmtpTransportListenerImpl implements TransportListener {
 
 	@Override
 	public void messageDelivered(TransportEvent event) {
-		emailResponse.setMessage(ResponseMessages.EMAIL_SENT_SUCCESSFULLY);
+		emailResponse.setMessage(ResponseMessages.EMAIL_SENT_SUCCESSFULLY, null);
 	}
 
 	@Override
 	public void messageNotDelivered(TransportEvent event) {
-		emailResponse.setMessage(ResponseMessages.UNABLE_TO_SEND_EMAIL);
-		final Message msg = event.getMessage();
+		emailResponse.setMessage(ResponseMessages.UNABLE_TO_SEND_EMAIL, null);
 	}
 
 	@Override
 	public void messagePartiallyDelivered(TransportEvent e) {
-		emailResponse.setMessage(ResponseMessages.UNABLE_TO_SEND_EMAIL);
+		emailResponse.setMessage(ResponseMessages.EMAIL_PARTIALLY_DELIVERED, null);
 	}
-
 }

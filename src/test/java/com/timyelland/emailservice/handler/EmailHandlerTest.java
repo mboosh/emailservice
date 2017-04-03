@@ -24,10 +24,12 @@ public class EmailHandlerTest {
 		handler1.nextHandler(handler2);
 		handler2.nextHandler(handler3);
 		
-		when(smtpHandler.sendEmail(emailRequest, smtpProperties)).thenReturn(true);
+		final EmailResponse emailResponse = EmailResponse.create();
 		
-		final EmailResponse emailResponse = handler1.handleRequest(emailRequest);
-		assert(emailResponse.getMessage().equals(ResponseMessages.EMAIL_SENT_SUCCESSFULLY));
+		when(smtpHandler.sendEmail(emailRequest, emailResponse, smtpProperties)).thenReturn(true);
+		
+		handler1.handleRequest(emailRequest, emailResponse);
+		assert(emailResponse.getMessages().containsKey(ResponseMessages.EMAIL_SENT_SUCCESSFULLY));
 	}
 	
 	@Test
@@ -44,10 +46,12 @@ public class EmailHandlerTest {
 		handler1.nextHandler(handler2);
 		handler2.nextHandler(handler3);
 		
-		when(smtpHandler.sendEmail(emailRequest, smtpProperties)).thenReturn(false);
+		final EmailResponse emailResponse = EmailResponse.create();		
 		
-		final EmailResponse emailResponse = handler1.handleRequest(emailRequest);
-		assert(emailResponse.getMessage().equals(ResponseMessages.UNABLE_TO_SEND_EMAIL));
+		when(smtpHandler.sendEmail(emailRequest, emailResponse, smtpProperties)).thenReturn(false);
+		
+		handler1.handleRequest(emailRequest, emailResponse);
+		assert(emailResponse.getMessages().containsKey(ResponseMessages.UNABLE_TO_SEND_EMAIL));
 	}	
 
 }

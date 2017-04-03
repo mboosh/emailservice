@@ -5,6 +5,6 @@ import com.timyelland.emailservice.data.EmailResponse;
 
 public interface EmailHandler {	  
 	void nextHandler(EmailHandler handler);
-	EmailResponse handleRequest(EmailRequest request);
+	boolean handleRequest(EmailRequest request, EmailResponse response);
 }
 
