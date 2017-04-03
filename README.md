@@ -11,6 +11,8 @@ Email service which will enable you to send emails through various SMTP servers.
   * AngularJS
   * HTML
   * CSS
+
+NOTE: The JavaScript and CSS files will be hosted on jsdeliver once the pull request has being completed. 
   
 ## Back end
 
